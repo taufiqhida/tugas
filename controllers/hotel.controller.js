@@ -53,7 +53,7 @@ const getHotelById = async (req, res, next) => {
 
 const createHotel = async (req, res, next) => {
   console.log(req.body);
-  console.log("req.file");
+
   const {
     title,
     deskripsi,
@@ -69,18 +69,16 @@ const createHotel = async (req, res, next) => {
     checkOut,
   } = req.body;
 
-  const nameSlug = await utils.createSlug(title);
-  console.log("req.file");
-
   try {
     // Upload image using Multer and ImageKit
-    console.log("req.file");
-    const image1 = req.file;
+
+    const { image1, image2, image3 } = req.file;
+    console.log(image1, "Kosong 1");
     const allowedMimes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
     const allowedSizeMb = 2;
     const nameSlug = await utils.createSlug(title);
     if (typeof image1 === "undefined")
-      return res.status(400).json("Foto Kosong");
+      return res.status(400).json("Foto Kosong 1");
     if (!allowedMimes.includes(image1.mimetype))
       return res.status(400).json("cover kategori harus berupa gambar");
     if (image1.size / (1024 * 1024) > allowedSizeMb)
@@ -91,9 +89,10 @@ const createHotel = async (req, res, next) => {
       fileName: originalFileName1,
       file: stringFile1,
     });
-    const image2 = req.file;
+
+    console.log(image2, "Kosong 2");
     if (typeof image2 === "undefined")
-      return res.status(400).json("Foto Kosong");
+      return res.status(400).json("Foto Kosong 2");
     if (!allowedMimes.includes(image2.mimetype))
       return res.status(400).json("cover kategori harus berupa gambar");
     if (image2.size / (1024 * 1024) > allowedSizeMb)
@@ -104,7 +103,6 @@ const createHotel = async (req, res, next) => {
       fileName: originalFileName2,
       file: stringFile2,
     });
-    const image3 = req.file;
     if (typeof image3 === "undefined")
       return res.status(400).json("Foto Kosong");
     if (!allowedMimes.includes(image3.mimetype))
@@ -117,7 +115,7 @@ const createHotel = async (req, res, next) => {
       fileName: originalFileName3,
       file: stringFile3,
     });
-
+    console.log(req.body);
     // Create hotel with image URL and ImageKit fileId
     const newHotel = await prisma.hotel.create({
       data: {
@@ -168,7 +166,7 @@ const createHotel = async (req, res, next) => {
     res.status(201).json(responseData);
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    next(error);
   }
 };
 

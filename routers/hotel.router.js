@@ -9,9 +9,11 @@ router.get("/", controller.getAllHotels);
 router.get("/:id", controller.getHotelById);
 router.post(
   "/",
-  upload.single("image1"),
-  upload.single("image2"),
-  upload.single("image3"),
+  upload.fields([
+    { name: "image1", maxCount: 1 },
+    { name: "image2", maxCount: 1 },
+    { name: "image3", maxCount: 1 },
+  ]),
   controller.createHotel
 );
 // router.put("/:id", upload.single("image"), controller.updateHotel);

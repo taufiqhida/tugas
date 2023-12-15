@@ -6,17 +6,17 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const errorHanding = require("./middlewares/errorHanding");
 
-app.use(
-  express.json({
-    strict: false,
-  })
-);
-app.use(cors());
-app.use(express.json()); // body-parser is now deprecated as of Express 4.16+
+// app.use(
+//   express.json({
+//     strict: false,
+//   })
+// );
+// app.use(cors());
+// app.use(express.json()); // body-parser is now deprecated as of Express 4.16+
 // app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.json());
+// app.use(bodyParser.json());
+// app.use(express.json());
 app.use(cors());
 //Ini buat error Handingling
 app.use(errorHanding);
