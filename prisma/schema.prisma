@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admins")
+}
+
+model Ulasan {
+  id     Int    @id @default(autoincrement())
+  nama   String
+  tempat String
+  ulasan String
+
+  @@map("ulasan")
+}
+
+model Kecamatan {
+  id   Int    @id @default(autoincrement())
+  nama String
+  slug String @unique
+
+  hotels  Hotel[]
+  wisatas Wisata[]
+
+  @@map("kecamatan")
+}
+
+model FasilitasHotel {
+  id       Int     @id @default(autoincrement())
+  nama     String
+  isActive Boolean @map("is_active")
+  jumlah   Int
+  hotel    Hotel?  @relation(fields: [hotelId], references: [id])
+  hotelId  Int?
+
+  @@map("fasilitas_hotel")
+}
+
+model FasilitasWisata {
+  id       Int     @id @default(autoincrement())
+  nama     String
+  isActive Boolean @map("is_active")
+  jumlah   Int
+  wisata   Wisata? @relation(fields: [wisataId], references: [id])
+  wisataId Int?
+
+  @@map("fasilitas_wisata")
+}
+
+model Hotel {
+  id             Int              @id @default(autoincrement())
+  title          String
+  slug           String           @unique
+  deskripsi      String
+  linkmap        String
+  alamat         String
+  nohp           String
+  hargaMin       String           @map("hargaMin")
+  hargaMax       String           @map("hargaMax")
+  isPopular      Boolean
+  jarak          Int
+  rating         Float
+  checkIn        String           @map("checkIn")
+  checkOut       String           @map("checkOut")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  kecamatan      Kecamatan        @relation(fields: [kecamatanId], references: [id])
+  kecamatanId    Int
+  image1         String
+  image2         String
+  image3         String
+  fasilitasHotel FasilitasHotel[]
+  wisataHasHotel WisataHasHotel[]
+
+  @@map("hotel")
+}
+
+model Wisata {
+  id              Int               @id @default(autoincrement())
+  title           String
+  slug            String            @unique
+  deskripsi       String
+  linkmap         String
+  alamat          String
+  nohp            String
+  hargaMin        String            @map("hargaMin")
+  hargaMax        String            @map("hargaMax")
+  jarak           Int
+  rating          Float
+  jamBuka         String            @map("jam_buka")
+  jamTutup        String            @map("jam_tutup")
+  isPopular       Boolean
+  kecamatan       Kecamatan         @relation(fields: [kecamatanId], references: [id])
+  kecamatanId     Int
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  image1          String
+  image2          String
+  image3          String
+  fasilitasWisata FasilitasWisata[]
+  wisataHasHotel  WisataHasHotel[]
+
+  @@map("wisata")
+}
+
+model WisataHasHotel {
+  id       Int     @id @default(autoincrement())
+  Hotel    Hotel?  @relation(fields: [hotelId], references: [id])
+  hotelId  Int?
+  Wisata   Wisata? @relation(fields: [wisataId], references: [id])
+  wisataId Int?
+
+  @@map("WisataHasHotel")
+}
