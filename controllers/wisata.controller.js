@@ -9,7 +9,6 @@ const utils = require("../utils");
 const getWisataAll = async (req, res, next) => {
   let { page = 1, limit = 10 } = req.query; //menghasilkan string
   let skip = (page - 1) * limit;
-  console.log(req.query);
   try {
     const allWisata = await prisma.wisata.findMany({
       take: parseInt(limit),
@@ -35,7 +34,6 @@ const getWisataAll = async (req, res, next) => {
 
 const getWisataById = async (req, res, next) => {
   const wisataId = parseInt(req.params.id);
-  console.log(wisataId);
   try {
     const hotel = await prisma.wisata.findUnique({
       where: { id: wisataId },
@@ -88,7 +86,7 @@ const createWisata = async (req, res, next) => {
       file: stringFile1,
     });
 
-    console.log(image2, "Kosong 2");
+    
     if (typeof image2 === "undefined")
       return res.status(400).json("Foto Kosong 2");
     if (!allowedMimes.includes(image2[0].mimetype))
@@ -206,7 +204,7 @@ const updateWisata = async (req, res, next) => {
       file: stringFile1,
     });
 
-    console.log(image2, "Kosong 2");
+    
     if (typeof image2 === "undefined")
       return res.status(400).json("Foto Kosong 2");
     if (!allowedMimes.includes(image2[0].mimetype))
@@ -240,14 +238,14 @@ const updateWisata = async (req, res, next) => {
         linkmap: linkmap,
         alamat: alamat,
         nohp: nohp,
-        hargaMin: parseInt(hargaMin),
-        hargaMax: parseInt(hargaMax),
-        isPopular: isPopular,
+        hargaMin: hargaMin,
+        hargaMax: hargaMax,
+        isPopular: Boolean(isPopular),
         jarak: parseInt(jarak),
         rating: parseFloat(rating),
         jamBuka: jamBuka,
         jamTutup: jamTutup,
-        kecamatanId: parseInt(req.body.kecamatanId),
+        kecamatanId: parseInt(kecamatanId),
         slug: nameSlug,
         image1: uploadFile1.url,
         image2: uploadFile2.url,

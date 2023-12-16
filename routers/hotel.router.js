@@ -16,8 +16,12 @@ router.post(
   ]),
   controller.createHotel
 );
-// router.put("/:id", upload.single("image"), controller.updateHotel);
-// router.delete("/:id", controller.deleteHotel);
+router.put("/:id",   upload.fields([
+  { name: "image1", maxCount: 1 },
+  { name: "image2", maxCount: 1 },
+  { name: "image3", maxCount: 1 },
+]), controller.updateHotel);
+router.delete("/:id", controller.deleteHotel);
 
 // const controller = require("../controllers/hotel.controller");
 

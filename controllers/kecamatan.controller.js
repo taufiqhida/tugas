@@ -67,13 +67,13 @@ module.exports = {
   },
   destroy: async (req, res, next) => {
     try {
-      const data = await kecamatan.delete({
+      const dataKecamatan = await kecamatan.delete({
         where: {
           id: parseInt(req.params.id),
         },
       });
 
-      return res.status(200).json("Data Berhasil di hps");
+      return res.status(200).json("Data Berhasil di hps", dataKecamatan);
     } catch (error) {
       return next(error);
     }
