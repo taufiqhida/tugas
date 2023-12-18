@@ -18,5 +18,6 @@ router.put("/:id",upload.fields([
     { name: "image3", maxCount: 1 },
   ]),  controller.updateWisata);
 router.delete("/:id", controller.deleteWisata);
+router.get("/fasilitas/:id", controller.fasilitasWisata)
 
 module.exports = router;

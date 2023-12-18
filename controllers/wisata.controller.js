@@ -306,10 +306,31 @@ const deleteWisata = async (req, res, next) => {
   }
 };
 
+const fasilitasWisata = async (req, res, next) => {
+  const wisataId = parseInt(req.params.id);
+  try {
+    const hotel = await prisma.wisata.findUnique({
+      where: { id: wisataId },
+      include: {
+        fasilitasWisata : true
+      }
+    });
+
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    res.status(200).json(hotel);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getWisataAll,
   getWisataById,
   createWisata, // Use Multer middleware for image upload
   updateWisata,
   deleteWisata,
+  fasilitasWisata
 };

@@ -1,4 +1,4 @@
-const { kecamatan } = require("../models"),
+const { kecamatan, hotel, wisata } = require("../models"),
   utils = require("../utils");
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
   },
   getKecamatan: async (req, res, next) => {
     try {
-      const dataKecamatan = await kecamatan.findFirst({
+      const dataKecamatan = await kecamatan.findUnique({
         where: {
           id: parseInt(req.params.id),
         },
@@ -78,4 +78,69 @@ module.exports = {
       return next(error);
     }
   },
+  getAllKecamatanAndCountHotelOrWisata : async (req, res, next) => {
+    try {
+      try {
+        const dataKecamatan = await kecamatan.findMany({
+          include:{
+            _count:{
+              select:{
+                hotels:true,
+                wisatas: true
+              }
+            }
+          }
+        });
+
+  
+        res.status(200).json({
+          status: true,
+          message: "OK!",
+          err: null,
+          data: dataKecamatan,
+        });
+      } catch (err) {
+        res.status(400).json({
+          status: false,
+          message: "Bad request!",
+          err: err.message,
+          data: null,
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  },
+  getAllHotelByKecamatan : async(req, res, next)=>{
+    try {
+      const dataKecamatan = await kecamatan.findUnique({
+        where: {
+          id: parseInt(req.params.id),
+        },include:{
+          hotels: true
+        },
+      });
+      return res.status(201).json({
+        data: dataKecamatan,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getAllWisataByKecamatan : async(req, res, next)=>{
+    try {
+      const dataKecamatan = await kecamatan.findUnique({
+        where: {
+          id: parseInt(req.params.id),
+        },include:{
+          wisatas: true
+        },
+      });
+      return res.status(201).json({
+        data: dataKecamatan,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 };

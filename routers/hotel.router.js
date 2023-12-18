@@ -22,7 +22,7 @@ router.put("/:id",   upload.fields([
   { name: "image3", maxCount: 1 },
 ]), controller.updateHotel);
 router.delete("/:id", controller.deleteHotel);
-
+router.get("/fasilitas/:id", controller.fasilitasHotel)
 // const controller = require("../controllers/hotel.controller");
 
 // router.post("/create",controller.upload.single('image'), controller.create)

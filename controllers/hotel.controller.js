@@ -307,10 +307,31 @@ const deleteHotel = async (req, res, next) => {
   }
 };
 
+const fasilitasHotel = async(req, res, next)=>{
+  const hotelId = parseInt(req.params.id);
+  console.log(hotelId);
+  try {
+    const hotel = await prisma.hotel.findUnique({
+      where: { id: hotelId },
+      include: {
+        fasilitasHotel: true
+      }
+    });
+
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    res.status(200).json(hotel);
+  } catch (error) {
+    next(error);
+  }
+}
 module.exports = {
   getAllHotels,
   getHotelById,
   createHotel, // Use Multer middleware for image upload
   updateHotel,
   deleteHotel,
+  fasilitasHotel
 };
