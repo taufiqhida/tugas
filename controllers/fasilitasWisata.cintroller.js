@@ -4,15 +4,21 @@ const { fasilitasWisata } = require("../models"),
 module.exports = {
   createfasilitasWisata: async (req, res, next) => {
     try {
+      console.log(req.body, "Shay")
       const { nama, isActive, jumlah, wisataId } = req.body;
       const newFasilitasWisata = await fasilitasWisata.create({
         data: {
           nama: nama,
-          isActive : isActive,
-          jumlah : jumlah,
+          isActive : Boolean(isActive),
+          jumlah: parseInt(jumlah),
           wisataId : parseInt(wisataId)
         },
       });
+      if (!newFasilitasWisata) {
+        return res.status(500).json({
+          error: "Gagal membuat fasilitas wisata.",
+        });
+      }
 
       return res.status(201).json({
         data: newFasilitasWisata,
@@ -20,6 +26,7 @@ module.exports = {
     } catch (error) {
       next(error);
     }
+  
   },
   getfasilitasWisata: async (req, res, next) => {
     try {
@@ -55,9 +62,9 @@ module.exports = {
         },
         data: {
           nama: nama,
-          isActive: isActive,
-          jumlah: jumlah,
-          wisataId: parent( wisataId),
+          isActive : Boolean(isActive),
+          jumlah: parseInt(jumlah),
+          wisataId : parseInt(wisataId)
           
         },
       });
@@ -77,7 +84,7 @@ module.exports = {
         },
       });
 
-      return res.status(200).json("Data Berhasil di hps",dataFasilitas );
+      return res.status(200).json(dataFasilitas );
     } catch (error) {
       return next(error);
     }

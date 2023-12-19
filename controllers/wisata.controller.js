@@ -10,6 +10,7 @@ const getWisataAll = async (req, res, next) => {
   let { page = 1, limit = 10 } = req.query; //menghasilkan string
   let skip = (page - 1) * limit;
   try {
+    if(req.query.search){
     const allWisata = await prisma.wisata.findMany({
       take: parseInt(limit),
       skip: skip,
@@ -37,6 +38,24 @@ const getWisataAll = async (req, res, next) => {
       total_data: resultCount,
       data: allWisata,
     });
+  }
+  const allWisata = await prisma.wisata.findMany({
+    take: parseInt(limit),
+    skip: skip,
+  });
+
+  const resultCount = await prisma.wisata.count(); //integer jumlah total data wisata
+
+  //generated total page
+  const totalPage = Math.ceil(resultCount / limit);
+
+  res.status(200).json({
+    success: true,
+    current_page: page - 0, //ini -0 merubah menjadi integer
+    total_page: totalPage,
+    total_data: resultCount,
+    data: allWisata,
+  });
   } catch (error) {
     next(error);
   }

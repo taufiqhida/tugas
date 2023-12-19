@@ -11,27 +11,48 @@ const getAllHotels = async (req, res, next) => {
   let skip = (page - 1) * limit;
   console.log(req.query);
   try {
-    const allHotels = await prisma.hotel.findMany({
-      take: parseInt(limit),
-      skip: skip,
-      where:{
-        OR: [
-          {
-            title:{
-              contains: req.query.search,
-                  mode: "insensitive",
+    if(req.query.search){
+
+      const allHotels = await prisma.hotel.findMany({
+        take: parseInt(limit),
+        skip: skip,
+        where:{
+          OR: [
+            {
+              title:{
+                contains: req.query.search,
+                mode: "insensitive",
+              }
             }
-          }
-        ]
-      }
+          ]
+        }
+      });
+      
+      const resultCount = await prisma.hotel.count(); // integer jumlah total data wisata
+      
+      // generated total page
+      const totalPage = Math.ceil(resultCount / limit);
+      
+      res.status(200).json({
+      success: true,
+      current_page: parseInt(page),
+      total_page: totalPage,
+      total_data: resultCount,
+      data: allHotels,
     });
 
-    const resultCount = await prisma.hotel.count(); // integer jumlah total data wisata
+  }
+        const allHotels = await prisma.hotel.findMany({
+        take: parseInt(limit),
+        skip: skip,
+      });
 
-    // generated total page
-    const totalPage = Math.ceil(resultCount / limit);
-
-    res.status(200).json({
+      const resultCount = await prisma.hotel.count(); // integer jumlah total data wisata
+      
+      // generated total page
+      const totalPage = Math.ceil(resultCount / limit);
+      
+      res.status(200).json({
       success: true,
       current_page: parseInt(page),
       total_page: totalPage,
