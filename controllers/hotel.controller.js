@@ -14,6 +14,16 @@ const getAllHotels = async (req, res, next) => {
     const allHotels = await prisma.hotel.findMany({
       take: parseInt(limit),
       skip: skip,
+      where:{
+        OR: [
+          {
+            title:{
+              contains: req.query.search,
+                  mode: "insensitive",
+            }
+          }
+        ]
+      }
     });
 
     const resultCount = await prisma.hotel.count(); // integer jumlah total data wisata

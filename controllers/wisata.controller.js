@@ -13,6 +13,16 @@ const getWisataAll = async (req, res, next) => {
     const allWisata = await prisma.wisata.findMany({
       take: parseInt(limit),
       skip: skip,
+      where:{
+        OR: [
+          {
+            title:{
+              contains: req.query.search,
+                  mode: "insensitive",
+            }
+          }
+        ]
+      }
     });
 
     const resultCount = await prisma.wisata.count(); //integer jumlah total data wisata
@@ -309,18 +319,18 @@ const deleteWisata = async (req, res, next) => {
 const fasilitasWisata = async (req, res, next) => {
   const wisataId = parseInt(req.params.id);
   try {
-    const hotel = await prisma.wisata.findUnique({
+    const wisata = await prisma.wisata.findUnique({
       where: { id: wisataId },
       include: {
         fasilitasWisata : true
       }
     });
 
-    if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
+    if (!wisata) {
+      return res.status(404).json({ message: "wisata not found" });
     }
 
-    res.status(200).json(hotel);
+    res.status(200).json(wisata);
   } catch (error) {
     next(error);
   }
