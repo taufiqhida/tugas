@@ -294,9 +294,9 @@ const updateWisata = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
-        imageFileName1: uploadFile1.fileName,
-        imageFileName2: uploadFile2.fileName,
-        imageFileName3: uploadFile3.fileName
+        imageFileName1: originalFileName1,
+        imageFileName2: originalFileName2,
+        imageFileName3: originalFileName3
       },
     });
 
