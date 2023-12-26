@@ -167,9 +167,9 @@ const createHotel = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
-        imageFileName1: uploadFile1.imageFileName1,
-        imageFileName2: uploadFile2.imageFileName2,
-        imageFileName3: uploadFile3.imageFileName3
+        imageFileName1: originalFileName1,
+        imageFileName2: originalFileName2,
+        imageFileName3: originalFileName3
       },
     });
 
@@ -195,9 +195,9 @@ const createHotel = async (req, res, next) => {
         image1: newHotel.image1.url,
         image2: newHotel.image2.url,
         image3: newHotel.image3.url,
-        imageFileName1: newHotel.image1.imageFileName1,
-        imageFileName2: newHotel.image2.imageFileName2,
-        imageFileName3: newHotel.image3.imageFileName3,
+        imageFileName1: newHotel.originalFileName1,
+        imageFileName2: newHotel.originalFileName2,
+        imageFileName3: newHotel.originalFileName3,
       },
     };
     res.status(201).json(responseData);

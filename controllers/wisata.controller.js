@@ -163,9 +163,9 @@ const createWisata = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
-        imageFileName1: uploadFile1.imageFileName1,
-        imageFileName2: uploadFile2.imageFileName2,
-        imageFileName3: uploadFile3.imageFileName3
+        imageFileName1: originalFileName1,
+        imageFileName2: originalFileName2,
+        imageFileName3: originalFileName3
       },
     });
 
@@ -191,9 +191,9 @@ const createWisata = async (req, res, next) => {
         image1: newWisata.image1.url,
         image2: newWisata.image2.url,
         image3: newWisata.image3.url,
-        imageFileName1: newWisata.image1.imageFileName1,
-        imageFileName2: newWisata.image2.imageFileName2,
-        imageFileName3: newWisata.image3.imageFileName3,
+        imageFileName1: newWisata.originalFileName1,
+        imageFileName2: newWisata.originalFileName2,
+        imageFileName3: newWisata.originalFileName3,
       },
     };
     res.status(201).json(responseData);
@@ -294,9 +294,9 @@ const updateWisata = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
-        imageFileName1: uploadFile1.imageFileName1,
-        imageFileName2: uploadFile2.imageFileName2,
-        imageFileName3: uploadFile3.imageFileName3
+        imageFileName1: uploadFile1.fileName,
+        imageFileName2: uploadFile2.fileName,
+        imageFileName3: uploadFile3.fileName
       },
     });
 
