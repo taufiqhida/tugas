@@ -96,6 +96,9 @@ const createHotel = async (req, res, next) => {
     rating,
     checkIn,
     checkOut,
+    imageFileName1,
+    imageFileName2,
+    imageFileName3
   } = req.body;
 
   try {
@@ -164,6 +167,9 @@ const createHotel = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
+        imageFileName1: uploadFile1.imageFileName1,
+        imageFileName2: uploadFile2.imageFileName2,
+        imageFileName3: uploadFile3.imageFileName3
       },
     });
 
@@ -189,6 +195,9 @@ const createHotel = async (req, res, next) => {
         image1: newHotel.image1.url,
         image2: newHotel.image2.url,
         image3: newHotel.image3.url,
+        imageFileName1: newHotel.image1.imageFileName1,
+        imageFileName2: newHotel.image2.imageFileName2,
+        imageFileName3: newHotel.image3.imageFileName3,
       },
     };
     res.status(201).json(responseData);
@@ -214,6 +223,9 @@ const updateHotel = async (req, res, next) => {
     rating,
     checkIn,
     checkOut,
+    imageFileName1,
+    imageFileName2,
+    imageFileName3
   } = req.body;
 
   try {
@@ -224,8 +236,6 @@ const updateHotel = async (req, res, next) => {
     const allowedSizeMb = 2;
     const nameSlug = await utils.createSlug(title);
 
-    if (typeof image1 === "undefined")
-      return res.status(400).json("Foto Kosong 1");
     if (!allowedMimes.includes(image1[0].mimetype))
       return res.status(400).json("cover harus berupa gambar 1");
     if (image1[0].size / (1024 * 1024) > allowedSizeMb)
@@ -238,8 +248,6 @@ const updateHotel = async (req, res, next) => {
     });
 
     console.log(image2, "Kosong 2");
-    if (typeof image2 === "undefined")
-      return res.status(400).json("Foto Kosong 2");
     if (!allowedMimes.includes(image2[0].mimetype))
       return res.status(400).json("cover kategori harus berupa gambar 2");
     if (image2[0].size / (1024 * 1024) > allowedSizeMb)
@@ -250,8 +258,6 @@ const updateHotel = async (req, res, next) => {
       fileName: originalFileName2,
       file: stringFile2,
     });
-    if (typeof image3 === "undefined")
-      return res.status(400).json("Foto Kosong");
     if (!allowedMimes.includes(image3[0].mimetype))
       return res.status(400).json("cover kategori harus berupa gambar 3");
     if (image3[0].size / (1024 * 1024) > allowedSizeMb)
@@ -282,6 +288,9 @@ const updateHotel = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
+        imageFileName1: uploadFile1.imageFileName1,
+        imageFileName2: uploadFile2.imageFileName2,
+        imageFileName3: uploadFile3.imageFileName3
       },
     });
 
@@ -310,6 +319,9 @@ const updateHotel = async (req, res, next) => {
         image1: updatedHotel.image1.url,
         image2: updatedHotel.image2.url,
         image3: updatedHotel.image3.url,
+        imageFileName1: updatedHotel.imageFileName1,
+        imageFileName2: updatedHotel.imageFileName2,
+        imageFileName3: updatedHotel.imageFileName3,
       },
     };
     res.status(201).json(responseData);

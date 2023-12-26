@@ -79,8 +79,11 @@ model Hotel {
   kecamatan      Kecamatan        @relation(fields: [kecamatanId], references: [id])
   kecamatanId    Int
   image1         String
+  imageFileName1 String?          @map("image_filename1")
   image2         String
+  imageFileName2 String?          @map("image_filename2")
   image3         String
+  imageFileName3 String?          @map("image_filename3")
   fasilitasHotel FasilitasHotel[]
   wisataHasHotel WisataHasHotel[]
 
@@ -107,8 +110,11 @@ model Wisata {
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @updatedAt @map("updated_at")
   image1          String
+  imageFileName1  String?           @map("image_filename1")
   image2          String
+  imageFileName2  String?           @map("image_filename2")
   image3          String
+  imageFileName3  String?           @map("image_filename3")
   fasilitasWisata FasilitasWisata[]
   wisataHasHotel  WisataHasHotel[]
 

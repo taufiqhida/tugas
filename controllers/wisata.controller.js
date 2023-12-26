@@ -92,6 +92,9 @@ const createWisata = async (req, res, next) => {
     rating,
     jamBuka,
     jamTutup,
+    imageFileName1,
+    imageFileName2,
+    imageFileName3
   } = req.body;
 
   try {
@@ -160,6 +163,9 @@ const createWisata = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
+        imageFileName1: uploadFile1.imageFileName1,
+        imageFileName2: uploadFile2.imageFileName2,
+        imageFileName3: uploadFile3.imageFileName3
       },
     });
 
@@ -185,6 +191,9 @@ const createWisata = async (req, res, next) => {
         image1: newWisata.image1.url,
         image2: newWisata.image2.url,
         image3: newWisata.image3.url,
+        imageFileName1: newWisata.image1.imageFileName1,
+        imageFileName2: newWisata.image2.imageFileName2,
+        imageFileName3: newWisata.image3.imageFileName3,
       },
     };
     res.status(201).json(responseData);
@@ -195,24 +204,35 @@ const createWisata = async (req, res, next) => {
 };
 
 const updateWisata = async (req, res, next) => {
-  const wisataId = parseInt(req.params.id);
-  const {
-    title,
-    deskripsi,
-    linkmap,
-    alamat,
-    nohp,
-    hargaMin,
-    hargaMax,
-    isPopular,
-    jarak,
-    rating,
-    jamBuka,
-    jamTutup,
-    kecamatanId,
-  } = req.body;
-
   try {
+    const wisataId = parseInt(req.params.id);
+    const checkWisata = await prisma.hotel.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!checkWisata)
+    return res
+      .status(404)
+      .json("Kategori Tidak di temukan");
+      const {
+        title,
+        deskripsi,
+        linkmap,
+        alamat,
+        nohp,
+        hargaMin,
+        hargaMax,
+        isPopular,
+        jarak,
+        rating,
+        jamBuka,
+        jamTutup,
+        imageFileName1,
+        imageFileName2,
+        imageFileName3
+      } = req.body;
+    
     // Upload image using Multer and ImageKit
     const { image1, image2, image3 } = req.files;
 
@@ -220,8 +240,7 @@ const updateWisata = async (req, res, next) => {
     const allowedSizeMb = 2;
     const nameSlug = await utils.createSlug(title);
 
-    if (typeof image1 === "undefined")
-      return res.status(400).json("Foto Kosong 1");
+    
     if (!allowedMimes.includes(image1[0].mimetype))
       return res.status(400).json("cover harus berupa gambar 1");
     if (image1[0].size / (1024 * 1024) > allowedSizeMb)
@@ -234,8 +253,6 @@ const updateWisata = async (req, res, next) => {
     });
 
     
-    if (typeof image2 === "undefined")
-      return res.status(400).json("Foto Kosong 2");
     if (!allowedMimes.includes(image2[0].mimetype))
       return res.status(400).json("cover kategori harus berupa gambar 2");
     if (image2[0].size / (1024 * 1024) > allowedSizeMb)
@@ -246,8 +263,6 @@ const updateWisata = async (req, res, next) => {
       fileName: originalFileName2,
       file: stringFile2,
     });
-    if (typeof image3 === "undefined")
-      return res.status(400).json("Foto Kosong");
     if (!allowedMimes.includes(image3[0].mimetype))
       return res.status(400).json("cover kategori harus berupa gambar 3");
     if (image3[0].size / (1024 * 1024) > allowedSizeMb)
@@ -279,6 +294,9 @@ const updateWisata = async (req, res, next) => {
         image1: uploadFile1.url,
         image2: uploadFile2.url,
         image3: uploadFile3.url,
+        imageFileName1: uploadFile1.imageFileName1,
+        imageFileName2: uploadFile2.imageFileName2,
+        imageFileName3: uploadFile3.imageFileName3
       },
     });
 
@@ -307,6 +325,9 @@ const updateWisata = async (req, res, next) => {
         image1: updatedWisata.image1.url,
         image2: updatedWisata.image2.url,
         image3: updatedWisata.image3.url,
+        imageFileName1: updatedWisata.imageFileName1,
+        imageFileName2: updatedWisata.imageFileName2,
+        imageFileName3: updatedWisata.imageFileName3,
       },
     };
     res.status(201).json(responseData);
